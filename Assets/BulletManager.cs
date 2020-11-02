@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class BulletManager : MonoBehaviour
 {
+
+    public float shootDistance;
     [SerializeField] GameObject bullet;
    
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnBullet", 0f, 2f);
-      
-
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InvokeRepeating("spawnBullet", 0f, 2f); // spawn the bullet every 2s
     }
 
     void spawnBullet()
     {
-        Instantiate(bullet, transform.position, Quaternion.identity);
+        // make a bullet
+        GameObject thisBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        // set max distance
+        thisBullet.GetComponent<ShootBullet>().maxDistance = shootDistance;
     }
 }

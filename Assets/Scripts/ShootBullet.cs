@@ -4,25 +4,28 @@ using UnityEngine;
 
 public class ShootBullet : MonoBehaviour
 {
+    private float startX;
     public float speed;
     public GameObject projectilePrefab;
-    public float lowerBound;
+    public float maxDistance;
    
     // Start is called before the first frame update
     void Start()
     {
-       
+        // record x pos of where bullet begins
+        startX = transform.position.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector2.right * Time.deltaTime * speed); 
-     
-        if (transform.position.x < lowerBound)
+        // move the bullet
+        transform.Translate(Vector2.left * Time.deltaTime * speed);
+
+        // delete bullet after it has travelled max distance
+        if (transform.position.x < (startX - maxDistance)) 
         {
             Destroy(gameObject);
-            
         }
     }
 }

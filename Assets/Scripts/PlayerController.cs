@@ -6,46 +6,46 @@ public class PlayerController : MonoBehaviour
 {
 
     private float moveInputDirection;
-
-    
-
     private Rigidbody2D rb;
-
     public float moveSpeed;
     public float jumpForce;
+
+    public GameObject endScreen;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        endScreen.SetActive(false); // hide endscreen on start
     }
     // Update is called once per frame
     void Update()
     {
-        CheckInput();                                     
-    }
-    private void FixedUpdate()
-    {
-        ApplyMovement();
-    }
-                             
-    private void CheckInput()
-    {
+        // left/right movement
         moveInputDirection = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetButtonDown("Jump"))
         {
-            Jump();
+            // jump
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
-    private void Jump()
+    private void FixedUpdate()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-    }
-
-    private void ApplyMovement()
-    {
+        // update pos
         rb.velocity = new Vector2(moveSpeed * moveInputDirection, rb.velocity.y);
+    }
+    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // detects a bullet has hit the player
+        if (collision.gameObject.tag == "bullet")
+        {
+            Destroy(collision.gameObject); // destroy bullet
+            Destroy(this.gameObject);      // destroy player
+            endScreen.SetActive(true);     // show end screen
+        }
     }
 }
    
